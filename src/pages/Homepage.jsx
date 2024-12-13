@@ -23,7 +23,7 @@ const Homepage = () => {
               className="flex flex-col gap-5"
             >
               <p className="sm:max-w-screen-lg max-w-md font-normal text-gray-600 text-3xl m-auto">
-                Create your unique and exclusive shirt with our brand-new 3D
+                Create your unique and exclusive shirt with our brand new 3D
                 customization tool. <strong>Unleash your imagination</strong>{" "}
                 and define your own style.
               </p>
