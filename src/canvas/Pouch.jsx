@@ -9,7 +9,7 @@ import state from "../store";
 export function Pouch(props) {
   const { nodes, materials } = useGLTF("models/bag.glb");
   const label = useLoader(TextureLoader, "./label.png");
-  const tea = useLoader(TextureLoader, "../src/assets/teaa.jpeg");
+  const tea = useLoader(TextureLoader, "./tea.jpeg");
   const snap = useSnapshot(state);
   return (
     <group {...props} dispose={null}>
