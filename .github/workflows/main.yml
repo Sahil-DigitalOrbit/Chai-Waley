@@ -1,47 +1,54 @@
 name: Firebase Deployment
+
 on:
   push:
     branches:
-      - main
+      - main  # Trigger deployment on pushes to the main branch
+
 jobs:
   build:
     name: Build Vite Project
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2.3.2       
-  
+        uses: actions/checkout@v2.3.2
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v3  # Use the latest version of Node.js setup action
+        with:
+          node-version: '16'  # Specify your required Node.js version
+        
       - name: Install Dependencies
         run: npm install
-                
+        
       - name: Build Project with Vite
         env:
           CI: false
-        run: npm run build
+        run: npm run build  # Build the Vite project (ensure your package.json has the build script)
 
       - name: Archive Production Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3  # Updated to the latest version
         with:
           name: build
-          path: dist
+          path: dist  # Vite output folder
 
   deploy:
     name: Deploy to Firebase Hosting
-    needs: build
+    needs: build  # Ensure deployment only happens after the build job completes successfully
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2.3.2
         
       - name: Download Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3  # Updated to the latest version
         with:
           name: build
-          path: dist
+          path: dist  # Download the artifact to the correct folder
 
       - name: Deploy to Firebase Hosting
-        uses: w9jds/firebase-action@v1.3.0
+        uses: w9jds/firebase-action@v1.3.0  # Use the latest stable version
         with:
-          args: deploy --only hosting
+          args: deploy --only hosting  # Deploy only hosting to Firebase
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }} 
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}  # Use Firebase token from GitHub Secrets
