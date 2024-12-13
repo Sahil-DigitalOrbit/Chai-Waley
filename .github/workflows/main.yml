@@ -1,37 +1,52 @@
-name: Firebase Hosting Deployment
+name: Firebase Deployment
 
-# Trigger the workflow on pushes to the main branch
 on:
   push:
     branches:
-      - main
+      - main 
 
 jobs:
-  deploy:
-    name: Deploy to Firebase Hosting
-    runs-on: ubuntu-latest
-
+  build:
+    name: Build Vite Project
+    runs-on: ubuntu-22.04
     steps:
-      # Step 1: Check out the repository
-      - name: Checkout Repository
+      - name: Checkout Repo
         uses: actions/checkout@v3
-
-      # Step 2: Set up Node.js environment
+        
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Ensure compatibility with Firebase CLI
-
-      # Step 3: Install dependencies
+          node-version: '18'
+        
       - name: Install Dependencies
-        run: npm ci
-
-      # Step 4: Build the Vite project
-      - name: Build Vite Project
+        run: npm install
+        
+      - name: Build Project with Vite
+        env:
+          CI: false
         run: npm run build
 
-      # Step 5: Deploy to Firebase Hosting
-      - name: Deploy to Firebase
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: dist
+
+  deploy:
+    name: Deploy to Firebase Hosting
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: dist
+
+      - name: Deploy to Firebase Hosting
         uses: w9jds/firebase-action@v1.3.0
         with:
           args: deploy --only hosting
