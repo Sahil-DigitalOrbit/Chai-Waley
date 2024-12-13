@@ -1,40 +1,33 @@
 name: Firebase Deployment
-
 on:
   push:
     branches:
-      - main  # Trigger deployment only on pushes to the main branch
-
+      - main
 jobs:
   build:
     name: Build Vite Project
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2.3.2
-        
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'  # Use the version of Node.js that you need for your project
-        
+        uses: actions/checkout@v2.3.2       
+  
       - name: Install Dependencies
         run: npm install
-        
+                
       - name: Build Project with Vite
         env:
           CI: false
-        run: npm run build  # Make sure your Vite build script is in your package.json
+        run: npm run build
 
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: dist  # Vite generates production-ready files in the 'dist' folder
+          path: dist
 
   deploy:
     name: Deploy to Firebase Hosting
-    needs: build  # Ensure deployment only happens after the build is successful
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -44,11 +37,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: dist  # Download the artifact to the correct folder
+          path: dist
 
       - name: Deploy to Firebase Hosting
-        uses: w9jds/firebase-action@v1.3.0  # Use the latest stable release
+        uses: w9jds/firebase-action@v1.3.0
         with:
-          args: deploy --only hosting  # Deploy only to Firebase Hosting
+          args: deploy --only hosting
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}  # Use Firebase token from GitHub Secrets
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }} 
