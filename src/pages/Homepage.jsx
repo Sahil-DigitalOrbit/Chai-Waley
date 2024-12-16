@@ -24,7 +24,7 @@ const Homepage = () => {
             >
               <p className="sm:max-w-screen-lg max-w-md font-normal text-gray-600 text-3xl m-auto">
                 Tea Bag 3D Component <strong>Unleash your imagination</strong>{" "}
-                and define your own style.
+                and define your own style. <br/>We will be live soon!
               </p>
 
               <CustomButton
