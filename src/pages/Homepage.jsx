@@ -23,8 +23,7 @@ const Homepage = () => {
               className="flex flex-col gap-5"
             >
               <p className="sm:max-w-screen-lg max-w-md font-normal text-gray-600 text-3xl m-auto">
-                Tea Bag 3D Component <strong>Unleash your imagination</strong>{" "}
-                and define your own style.
+                Tea Bag 3D Component 
               </p>
 
               <CustomButton
